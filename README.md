@@ -1,149 +1,119 @@
-
 # Phishing Email Analyzer
 
-A Python-based cybersecurity tool that analyzes `.eml` email files and identifies common indicators associated with phishing attempts. It examines sender information, Reply-To mismatches, reported email authentication results, suspicious phrases, URLs, and basic HTML link mismatches.
-
-The analyzer generates a heuristic risk score and saves its findings as a JSON report for further investigation.
+A Python-based cybersecurity project that analyzes `.eml` email files for potential phishing indicators. It includes a command-line interface (CLI) and a Flask-based web interface.
 
 ## Features
 
-- **Email parsing:** Extracts sender, subject, Reply-To, and message content from `.eml` files.
-- **Sender analysis:** Checks for basic sender-address formatting concerns.
-- **Reply-To analysis:** Flags potential domain mismatches between the sender and Reply-To address.
-- **Authentication analysis:** Reads reported SPF, DKIM, and DMARC results from `Authentication-Results` headers.
-- **Suspicious phrase detection:** Identifies predefined phrases commonly associated with phishing attempts.
-- **URL analysis:** Flags URLs containing IP addresses, known URL shorteners, and other basic indicators.
-- **HTML link analysis:** Checks for potential mismatches between visible link text and hyperlink destinations.
-- **Risk assessment:** Calculates a rule-based risk score and classifies the result as Low, Medium, or High.
-- **Recommendations:** Provides investigation guidance based on detected indicators.
-- **JSON reporting:** Saves analysis results for review and documentation.
-- **Automated testing:** Includes unit tests for key detection and reporting functions.
+- Analyze email sender and Reply-To information
+- Inspect SPF, DKIM, and DMARC authentication information when available
+- Detect suspicious phrases
+- Extract URLs and flag potentially suspicious URL patterns
+- Identify selected HTML-related indicators
+- Calculate a risk score and risk level
+- Generate security recommendations
+- Upload `.eml` files through a simple web interface
+- Validate file extensions, empty uploads, and file size
+- Run automated unit tests for the analyzer and web interface
 
 ## Technologies Used
 
 - Python
-- Python standard library
-- Email parsing (`email`)
-- Regular expressions (`re`)
-- URL parsing (`urllib.parse`)
-- HTML parsing (`html.parser`)
-- JSON reporting (`json`)
-- Unit testing (`unittest`)
-
-No third-party Python packages are required.
+- Flask
+- HTML and CSS
+- Python `email` package
+- Python `unittest` framework
 
 ## Project Structure
 
-~~~text
+```text
 PhishingEmailAnalyzer/
-|-- main.py
-|-- README.md
-|-- .gitignore
-|-- samples/
-|   `-- test_email.eml
-|-- reports/
-|   `-- test_email_report.json
-`-- tests/
-    `-- test_analyzer.py
-~~~
+├── app.py
+├── main.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+├── samples/
+│   └── test_email.eml
+├── reports/
+│   └── test_email_report.json
+├── templates/
+│   ├── index.html
+│   └── results.html
+└── tests/
+    ├── test_analyzer.py
+    └── test_web_app.py
+```
 
 ## Requirements
 
-- Python 3.10 or newer
-- Windows, Linux, or macOS
-- Git for version control and GitHub publishing
+- Python 3.10 or later recommended
+- pip
 
-## How to Run
+## Installation
 
-### 1. Clone the repository
+Clone the repository and open its directory:
 
-~~~bash
-git clone https://github.com/YOUR_USERNAME/phishing-email-analyzer.git
+```bash
+git clone https://github.com/tejaswiniPatange-613/phishing-email-analyzer.git
 cd phishing-email-analyzer
-~~~
+```
 
-Replace `YOUR_USERNAME` with your GitHub username.
+Install the dependencies:
 
-### 2. Analyze the sample email
+```bash
+python -m pip install -r requirements.txt
+```
 
-On Windows:
+On Windows, you can use `py` instead of `python`.
 
-~~~powershell
-py main.py
-~~~
+## Run the Web Interface
 
-On systems where `py` is unavailable:
+Start the Flask application:
 
-~~~bash
-python main.py
-~~~
+```bash
+python app.py
+```
 
-### 3. Analyze another email file
+Open this address in your browser:
 
-~~~powershell
-py main.py path\to\email.eml
-~~~
+```text
+http://127.0.0.1:5000
+```
 
-Replace the example path with the path to your local `.eml` file.
+Select an `.eml` file and click **Analyze Email** to view the analysis report.
 
-### 4. Run the automated tests
+The web interface accepts files up to 2 MB. Uploaded email content is processed in memory by the web route; it is not saved as an uploaded file by that route.
 
-~~~powershell
-py -m unittest discover -s tests -v
-~~~
+The built-in Flask server is intended for local development and testing, not production deployment.
 
-The test suite covers suspicious phrases, URLs, sender information, Reply-To mismatches, authentication results, HTML links, recommendations, and JSON report generation.
+## Run the Command-Line Analyzer
 
-## Example Output
+The original CLI remains available:
 
-The included synthetic sample email produces a **Medium** risk classification with a score of **5/10**.
+```bash
+python main.py samples/test_email.eml
+```
 
-Detected indicators include:
+Use the command supported by your current `main.py` if its arguments differ. The CLI can generate a JSON report using the existing analyzer functionality.
 
-- Suspicious wording related to account verification.
-- A URL containing an IP address.
-- A URL using a known shortening service.
-- Missing authentication results, leaving SPF, DKIM, and DMARC status unknown.
+## Run the Tests
 
-The score is a heuristic indicator, not a probability that an email is malicious.
+Run all automated tests:
 
-## How It Works
+```bash
+python -m unittest discover -s tests -v
+```
 
-1. Loads and parses the `.eml` message.
-2. Extracts relevant headers and message content.
-3. Checks sender details and Reply-To information.
-4. Reads available authentication results from message headers.
-5. Searches message content for suspicious phrases and URL indicators.
-6. Inspects available HTML hyperlinks for basic mismatches.
-7. Calculates a rule-based risk score and generates recommendations.
-8. Saves the findings to a JSON report.
+The test suite covers the original analyzer and the web interface, including valid uploads and common validation errors.
 
-## Limitations
+## Security Notes
 
-- Detection uses predefined rules and does not use a trained machine-learning model.
-- SPF, DKIM, and DMARC results are read from available headers; the tool does not independently verify these protocols.
-- Missing authentication information is treated as unknown, not as proof of failure.
-- HTML analysis is basic and does not execute JavaScript or render a browser page.
-- The risk score is heuristic and may produce false positives or miss sophisticated phishing attempts.
-- The tool does not open URLs, query live threat-intelligence services, or automatically block emails.
-
-Use the results as supporting evidence for an investigation, not as a final verdict.
-
-## Safe Testing
-
-The included email is a synthetic test sample intended for learning and demonstration. Its URLs are indicators for analysis and should not be opened.
-
-For real investigations, follow organizational policies and use approved, isolated analysis environments.
-
-## Future Improvements
-
-- Integration with approved threat-intelligence services.
-- More comprehensive email-header analysis.
-- Additional URL and domain reputation checks.
-- Configurable detection rules and risk weights.
-- HTML and text report export.
-- Expanded test coverage.
+- A flagged indicator does not prove an email is malicious.
+- Missing authentication results mean the status is unknown, not necessarily failed.
+- Do not open suspicious URLs directly.
+- Analyze only email files you are authorized to inspect.
+- The local development server should not be exposed to untrusted networks.
 
 ## Disclaimer
 
-This project is intended for educational and defensive cybersecurity purposes. It does not guarantee phishing detection and should not replace established email security controls or analyst judgment.
+This project is intended for educational and defensive cybersecurity purposes. Automated findings should be reviewed alongside other evidence before making security decisions.

@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Email Analyzer</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #172033;
+        }
+
+        header {
+            background: #10213b;
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+        }
+
+        header h1 { margin: 0 0 8px; font-size: 27px; }
+        header p { margin: 0; color: #cbd5e1; }
+
+        main {
+            max-width: 680px;
+            margin: 55px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: 0 8px 28px #0f172a12;
+        }
+
+        h2 { margin-top: 0; }
+
+        .upload-area {
+            border: 2px dashed #94a3b8;
+            border-radius: 10px;
+            padding: 30px 18px;
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        input[type="file"] {
+            display: block;
+            width: 100%;
+            margin-top: 18px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: 0;
+            border-radius: 8px;
+            background: #1764d2;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover { background: #104eaa; }
+
+        .error {
+            padding: 12px;
+            background: #fee2e2;
+            color: #991b1b;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .note {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Phishing Email Analyzer</h1>
+        <p>Inspect email messages for suspicious indicators</p>
+    </header>
+
+    <main>
+        <section class="card">
+            <h2>Analyze an email</h2>
+            <p>Upload a saved email message to examine its security indicators.</p>
+
+            {% if error %}
+                <div class="error" role="alert">{{ error }}</div>
+            {% endif %}
+
+            <form action="/analyze" method="POST"
+                  enctype="multipart/form-data">
+                <div class="upload-area">
+                    <strong>Select your email file</strong>
+                    <p>Supported format: .eml (maximum 2 MB)</p>
+                    <input type="file" name="email_file"
+                           accept=".eml,message/rfc822" required>
+                </div>
+
+                <button type="submit">Analyze Email</button>
+            </form>
+
+            <p class="note">
+                Privacy: This local demo processes the uploaded email in memory.
+                It does not connect to your inbox or open links found in messages.
+                Only upload emails you are authorized to analyze.
+                Findings are indicators, not proof that an email is malicious.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        Phishing Email Analyzer · Educational Security Project
+    </footer>
+</body>
+</html>
