@@ -1,0 +1,10 @@
+
+From: Security Team <security@example.test>
+To: analyst@example.test
+Subject: Urgent: Verify your account
+Date: Wed, 21 Oct 2026 10:00:00 +0000
+Content-Type: text/plain; charset="utf-8"
+
+Your account requires verification.
+Please review this message and verify your account.
+Urgent action is required. Visit http://192.0.2.10/login and https://bit.ly/example-test to verify your account.

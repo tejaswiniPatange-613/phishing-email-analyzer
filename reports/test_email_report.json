@@ -1,0 +1,44 @@
+{
+    "analysis_time_utc": "2026-10-22T05:30:53.596484+00:00",
+    "source_file": "samples\\test_email.eml",
+    "email_analysis": {
+        "sender": "Security Team <security@example.test>",
+        "subject": "Urgent: Verify your account",
+        "reply_to": "Not specified",
+        "sender_findings": [],
+        "reply_to_findings": [],
+        "authentication_analysis": {
+            "results": {
+                "spf": [],
+                "dkim": [],
+                "dmarc": []
+            },
+            "findings": [
+                "No Authentication-Results header was found. Authentication status is unknown."
+            ]
+        },
+        "phrase_findings": [
+            "Suspicious phrase detected: 'urgent'",
+            "Suspicious phrase detected: 'verify your account'"
+        ],
+        "urls": [
+            "http://192.0.2.10/login",
+            "https://bit.ly/example-test"
+        ],
+        "url_findings": [
+            "URL uses an IP address instead of a domain: http://192.0.2.10/login",
+            "URL uses a common shortening service: https://bit.ly/example-test"
+        ],
+        "html_findings": [],
+        "html_links_found": 0,
+        "risk_score": 5,
+        "risk_level": "Medium",
+        "recommendations": [
+            "Review suspicious wording in context. Keywords alone do not prove phishing.",
+            "Investigate flagged URLs and HTML links without opening them directly. Use approved security tools or an isolated analysis environment.",
+            "Authentication status is unknown. Review trusted mail-server logs; missing headers do not prove failure.",
+            "Correlate findings with other evidence before deciding whether to quarantine, block, or escalate the email."
+        ]
+    },
+    "disclaimer": "This is a rule-based demonstration, not a definitive phishing detector. Risk scores are heuristic. Reported authentication results are not independently verified. A low score does not guarantee that an email is safe."
+}
